@@ -102,12 +102,14 @@ SELECT *
 FROM films
 WHERE release_year > 2000 AND release_year < 2010 AND language = 'German'; 
 
--- Using AND
-
-
 -- Using OR
 -- Find the title and year of films from the 1990 or 1999
 SELECT title, release_year
 FROM films
 WHERE release_year = 1990 OR release_year = 1999;
+
+-- Find films released after the year 2000
+SELECT title
+FROM films
+WHERE release_date > 2000;
 
