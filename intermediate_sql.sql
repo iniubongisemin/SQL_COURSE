@@ -231,3 +231,36 @@ FROM films;
 -- 4. Find the duration of the shortest film
 SELECT MIN(duration) AS shortest_film
 FROM films;
+
+-- COMBINING AGGREGATE FUNCTIONS WITH WHERE
+-- 1. Calculate the sum of gross from the year 2000 or later
+SELECT SUM(gross) as total_gross
+FROM films
+WHERE release_year >= 2000;
+-- 2. Calculate the average gross of films that start with A
+SELECT AVG(gross) AS avg_gross_A
+FROM films
+WHERE title LIKE 'A%';
+-- 3. Calculate the lowest gross film in 1994
+SELECT MIN(gross) AS lowest_gross
+FROM films
+WHERE release_year = 1994;
+-- 4. Calculate the highest gross film released between 2000-2012
+SELECT MAX(gross) AS highest_gross
+FROM films
+WHERE release_year BETWEEN 2000 AND 2012;
+
+-- USING ROUND()
+-- Round the average number of facebook_likes to one decimal place
+SELECT ROUND(AVG(facebook_likes), 1) as avg_facebook_likes
+FROM reviews;
+
+-- ROUND() WITH A NEGATIVE NUMBER
+-- Calculate the average budget rounded to the thousands
+SELECT ROUND(AVG(budget), -3) AS avg_budget_thousands
+FROM films;
+
+-- Aliasing with functions
+-- Calculate the title and duration_hours from films
+SELECT title, (duration / 60.0) AS duration_hours
+FROM films;
