@@ -260,7 +260,41 @@ FROM reviews;
 SELECT ROUND(AVG(budget), -3) AS avg_budget_thousands
 FROM films;
 
--- Aliasing with functions
--- Calculate the title and duration_hours from films
+-- ALIASING WITH FUNCTIONS
+-- 1. Calculate the title and duration_hours from films
 SELECT title, (duration / 60.0) AS duration_hours
 FROM films;
+
+-- 2. Calculate the percentage of people who are no longer alive
+SELECT (COUNT(deathdate)) * 100.0 / (COUNT(*)) AS percentage_dead
+FROM people;
+
+-- 3. Find the number of decades in the films table
+SELECT (MAX(release_year) - MIN(release_year)) / 10.0 AS number_of_decades
+FROM films;
+
+-- ROUNDING RESULTS
+-- Round duration_hours to two decimal places
+SELECT title, ROUND((duration / 60.0), 2) AS duration_hours
+FROM films;
+
+-- SORTING SINGLE FIELDS
+-- 1. Select name from people and sort alphabetically
+SELECT name 
+FROM people
+ORDER BY name;   
+-- 2. Select the title and duration from longest to shortest film
+SELECT title, duration
+FROM films
+ORDER BY duration DESC;
+
+-- SORTING MULTIPLE FIELDS
+-- 1. Select the release year, duration, and title sorted by release year and duration
+SELECT release_year, duration, title
+FROM films
+ORDER BY release_year DESC, duration DESC; 
+-- 2. Select the certification, release year, and title sorted by certification and release year
+SELECT certification, release_year, title
+FROM films
+ORDER BY certification, release_year DESC;
+
