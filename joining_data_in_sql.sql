@@ -15,3 +15,19 @@ SELECT cities.name AS city, countries.name AS country, countries.region
 FROM cities
 INNER JOIN countries
 ON cities.country_code = countries.code;
+
+-- JOINING WITH ALIASED TABLES
+-- Select fields with aliases
+SELECT c.code AS country_code, name, e.year, e.inflation_rate
+FROM countries AS c
+-- Join to economies (alias e)
+INNER JOIN economies AS e
+-- Match on code field using table aliases
+ON e.code = c.code
+
+-- USING IN ACTION
+SELECT c.name AS country, l.name AS language, official
+FROM countries AS c
+INNER JOIN languages AS l
+-- Match using the code column
+USING(code)
