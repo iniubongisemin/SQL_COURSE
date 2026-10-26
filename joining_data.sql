@@ -96,7 +96,7 @@ SELECT
 FROM cities AS c1
 -- Perform an inner join with cities as c1 and countries as c2 on country code
 INNER JOIN countries as c2
-on c1.country_code = c2.code
+ON c1.country_code = c2.code
 ORDER BY code DESC;
 
 -- 2.
@@ -150,3 +150,106 @@ FROM languages
 RIGHT JOIN countries
 USING(code)
 ORDER BY language;
+
+-- COMPARING JOINS
+-- 1. SELECT name AS country, code, region, basic_unit
+FROM countries
+-- Join to currencies
+LEFT JOIN currencies
+USING (code)
+WHERE region = 'North America' 
+	OR name IS NULL
+ORDER BY region;
+
+-- 2. 
+SELECT name AS country, code, region, basic_unit
+FROM countries
+-- Join to currencies
+LEFT JOIN currencies
+USING (code)
+WHERE region = 'North America' 
+	OR name IS NULL
+ORDER BY region;
+
+-- 3.
+SELECT name AS country, code, region, basic_unit
+FROM countries
+-- Join to currencies
+INNER JOIN currencies
+USING (code)
+WHERE region = 'North America' 
+	OR name IS NULL
+ORDER BY region;
+
+-- CHAINING FULL JOINS
+SELECT 
+	c1.name AS country, 
+    region, 
+    l.name AS language,
+	basic_unit, 
+    frac_unit
+FROM countries AS c1 
+-- Full join with languages (alias as l)
+FULL JOIN languages AS l 
+USING (code)
+-- Full join with currencies (alias as c2)
+FULL JOIN currencies AS c2
+USING (code)
+WHERE region LIKE 'M%esia';
+
+-- HISTORIES AND LANGUAGES
+-- 1.
+SELECT c.name AS country, l.name AS language
+-- Inner join countries as c with languages as l on code
+FROM languages AS l
+INNER JOIN countries AS c
+ON l.code = c.code
+WHERE c.code IN ('PAK','IND')
+	AND l.code in ('PAK','IND');
+
+-- 2.
+SELECT c.name AS country, l.name AS language
+FROM countries AS c        
+-- Perform a cross join to languages (alias as l)
+CROSS JOIN languages AS l
+WHERE c.code IN ('PAK','IND')
+	AND l.code IN ('PAK','IND');
+
+-- CHOOSING YOUR JOIN
+SELECT 
+	c.name AS country,
+    region,
+    life_expectancy AS life_exp
+FROM countries AS c
+-- Join to populations (alias as p) using an appropriate join
+LEFT JOIN populations AS p 
+ON c.code = p.country_code
+-- Filter for only results in the year 2010
+WHERE year = 2010
+-- Sort by life_exp
+ORDER BY life_exp
+-- Limit to five records
+LIMIT 5;
+
+-- COMPARING A COUNTRY TO ITSELF
+-- 1. Select aliased fields from populations as p1
+SELECT 
+    p1.country_code,
+    p1.size AS size2010,
+    p2.size AS size2015
+-- Join populations as p1 to itself, alias as p2, on country code
+FROM populations AS p1
+INNER JOIN populations AS p2
+ON p1.country_code = p2.country_code;
+
+-- 2.
+SELECT 
+	p1.country_code, 
+    p1.size AS size2010, 
+    p2.size AS size2015
+FROM populations AS p1
+INNER JOIN populations AS p2
+ON p1.country_code = p2.country_code
+WHERE p1.year = 2010
+-- Filter such that p1.year is always five years before p2.year
+    AND p1.year = p2.year - 5;
