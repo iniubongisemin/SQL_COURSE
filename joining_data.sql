@@ -46,7 +46,7 @@ INNER JOIN languages AS l
 -- Use code as the joining field with the USING keyword
 USING(code);
 
--- Select country and language name (aliased)
+-- 3. Select country and language name (aliased)
 SELECT c.name AS country, l.name AS language
 -- From countries (aliased)
 FROM countries AS c

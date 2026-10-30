@@ -34,3 +34,30 @@ WHERE continent = 'Oceania'
 AND code NOT IN
     (SELECT code
     FROM currencies);
+
+-- SUBQUERIES INSIDE WHERE
+-- 1. Select average life_expectancy from the populations table
+SELECT AVG(life_expectancy)
+FROM populations
+-- Filter for the year 2015
+WHERE year = 2015;
+
+-- 2.
+SELECT *
+FROM populations
+WHERE year = 2015
+-- Filter for only those populations where life expectancy is 1.15 times higher than average
+  AND life_expectancy > 1.15 * 
+  (SELECT AVG(life_expectancy)
+   FROM populations
+   WHERE year = 2015);
+
+-- WHERE DO PEOPLE LIVE?
+-- Select relevant fields from cities table
+SELECT name, country_code, urbanarea_pop 
+FROM cities
+-- Filter using a subquery on the countries table
+WHERE name IN
+    (SELECT capital
+    FROM countries  
+    ORDER BY urbanarea_pop DESC);
